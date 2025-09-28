@@ -1,105 +1,71 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useContent } from '../contexts/ContentContext';
-import { JORDANIAN_UNIVERSITIES } from '../constants';
+import { JORDANIAN_UNIVERSITIES, MAJORS } from '../constants';
+import { TutorApplication } from '../types';
 
 const BecomeTutorPage: React.FC = () => {
     const { t, language } = useLanguage();
-    const { addTutorApplication } = useContent();
-    const [submitted, setSubmitted] = useState(false);
-    
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        university: '',
-        major: '',
-        year: '',
-        subjects: '',
-        motivation: '',
-    });
+    const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { id, value } = e.target;
-        setFormData(prev => ({ ...prev, [id]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            const universityEn = JORDANIAN_UNIVERSITIES.find(u => u[language] === formData.university)?.en || formData.university;
-            await addTutorApplication({...formData, university: universityEn});
-            setSubmitted(true);
-        } catch (error) {
-            console.error("Failed to submit application", error);
-            alert("Submission failed. Please try again.");
-        }
+        const formData = new FormData(e.currentTarget);
+        const application: TutorApplication = {
+            name: formData.get('name') as string,
+            email: formData.get('email') as string,
+            university: formData.get('university') as string,
+            major: formData.get('major') as string,
+            subjects: formData.get('subjects') as string,
+        };
+        // In a real app, you might validate or save this temporarily.
+        // Here, we navigate directly to the password creation step.
+        navigate('/create-tutor-password', { state: { application } });
     };
 
     return (
         <div className="container mx-auto px-6 py-12">
             <div className="text-center p-8 bg-white rounded-lg shadow-md">
-                <h2 className="text-4xl font-bold text-brand-blue">{t('tutor.title')}</h2>
-                <p className="mt-2 text-slate-600 max-w-2xl mx-auto">{t('tutor.subtitle')}</p>
-                 <p className="mt-4 text-sm text-slate-500 max-w-2xl mx-auto">{t('tutor.note')}</p>
+                <h2 className="text-4xl font-bold text-brand-blue">{t('tutor.becomeTutor.title')}</h2>
+                <p className="mt-2 text-slate-600 max-w-2xl mx-auto">{t('tutor.becomeTutor.subtitle')}</p>
             </div>
 
-            <div className="mt-10 max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-                {submitted ? (
-                    <div className="text-center py-8">
-                        <h3 className="text-2xl font-semibold text-brand-turquoise">{t('tutor.success.title')}</h3>
-                        <p className="mt-2 text-slate-600">{t('tutor.success.message')}</p>
+            <div className="mt-10 max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <InputField name="name" label={t('tutor.becomeTutor.form.name')} type="text" />
+                    <InputField name="email" label={t('tutor.becomeTutor.form.email')} type="email" />
+                    <SelectField name="university" label={t('tutor.becomeTutor.form.university')} options={JORDANIAN_UNIVERSITIES.map(u => u[language])} />
+                    <SelectField name="major" label={t('tutor.becomeTutor.form.major')} options={MAJORS.map(m => m[language])} />
+                    <InputField name="subjects" label={t('tutor.becomeTutor.form.subjects')} type="text" />
+                    <div>
+                        <label htmlFor="message" className="block text-sm font-medium text-slate-700">{t('tutor.becomeTutor.form.message')}</label>
+                        <textarea id="message" name="message" rows={4} required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-turquoise focus:border-brand-turquoise sm:text-sm"></textarea>
                     </div>
-                ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-slate-700">{t('tutor.form.name.label')}</label>
-                            <input type="text" id="name" required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise" placeholder={t('tutor.form.name.placeholder')} value={formData.name} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700">{t('tutor.form.email.label')}</label>
-                            <input type="email" id="email" required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise" placeholder={t('tutor.form.email.placeholder')} value={formData.email} onChange={handleChange} />
-                        </div>
-                         <div>
-                            <label htmlFor="university" className="block text-sm font-medium text-slate-700">{t('tutor.form.university.label')}</label>
-                             <select id="university" required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise bg-white" value={formData.university} onChange={handleChange}>
-                                <option value="" disabled>{t('signup.selectUniversityPlaceholder')}</option>
-                                {JORDANIAN_UNIVERSITIES.map(u => <option key={u.en} value={u[language]}>{u[language]}</option>)}
-                            </select>
-                        </div>
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label htmlFor="major" className="block text-sm font-medium text-slate-700">{t('tutor.form.major.label')}</label>
-                                <input type="text" id="major" required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise" placeholder={t('tutor.form.major.placeholder')} value={formData.major} onChange={handleChange} />
-                            </div>
-                            <div>
-                                <label htmlFor="year" className="block text-sm font-medium text-slate-700">{t('tutor.form.year.label')}</label>
-                                 <select id="year" required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise bg-white" value={formData.year} onChange={handleChange}>
-                                    <option value="" disabled>{t('tutor.form.year.placeholder')}</option>
-                                    <option value="First Year">{t('tutor.form.year.first')}</option>
-                                    <option value="Second Year">{t('tutor.form.year.second')}</option>
-                                    <option value="Third Year">{t('tutor.form.year.third')}</option>
-                                    <option value="Fourth Year">{t('tutor.form.year.fourth')}</option>
-                                    <option value="Fifth Year+">{t('tutor.form.year.fifth')}</option>
-                                     <option value="Graduate">{t('tutor.form.year.graduate')}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label htmlFor="subjects" className="block text-sm font-medium text-slate-700">{t('tutor.form.subjects.label')}</label>
-                            <input type="text" id="subjects" required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise" placeholder={t('tutor.form.subjects.placeholder')} value={formData.subjects} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="motivation" className="block text-sm font-medium text-slate-700">{t('tutor.form.motivation.label')}</label>
-                            <textarea id="motivation" rows={4} required className="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-turquoise" placeholder={t('tutor.form.motivation.placeholder')} value={formData.motivation} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <button type="submit" className="w-full bg-brand-orange text-white py-3 rounded-md hover:bg-opacity-90 transition-colors font-semibold">{t('tutor.form.submit')}</button>
-                        </div>
-                    </form>
-                )}
+                    <button type="submit" className="w-full bg-brand-orange text-white py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-orange">
+                        {t('tutor.becomeTutor.form.submit')}
+                    </button>
+                </form>
             </div>
         </div>
     );
 };
+
+const InputField: React.FC<{ name: string, label: string, type: string }> = ({ name, label, type }) => (
+    <div>
+        <label htmlFor={name} className="block text-sm font-medium text-slate-700">{label}</label>
+        <input type={type} name={name} id={name} required className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-turquoise focus:border-brand-turquoise sm:text-sm" />
+    </div>
+);
+
+const SelectField: React.FC<{ name: string, label: string, options: string[] }> = ({ name, label, options }) => (
+    <div>
+        <label htmlFor={name} className="block text-sm font-medium text-slate-700">{label}</label>
+        <select id={name} name={name} required className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-brand-turquoise focus:border-brand-turquoise sm:text-sm rounded-md bg-white">
+            <option value="">{`-- ${label} --`}</option>
+            {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+        </select>
+    </div>
+);
+
 
 export default BecomeTutorPage;

@@ -1,116 +1,185 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { User, AuthContextType } from '../types';
+import { User, TutorApplication, Subscription } from '../types';
+import { MOCK_STUDENTS } from '../constants';
 
-// This list simulates a secure user database with passwords.
-// It's kept internal to the AuthContext and not exported.
-const MOCK_STUDENT_DB: (User & {password: string})[] = [
-    { id: 'stu_1', email: 'student@gradz.com', password: 'password123', name: 'Alex Johnson', university: 'Princess Sumaya University for Technology (PSUT)', major: 'Computer Science', role: 'student', subscription: { planId: 'semester', endDate: '2024-09-01' } },
-    { id: 'stu_2', email: 'jane.doe@gradz.com', password: 'password123', name: 'Jane Doe', university: 'University of Jordan', major: 'Biology', role: 'student' },
-    { id: 'stu_3', email: 'peter.jones@gradz.com', password: 'password123', name: 'Peter Jones', university: 'Jordan University of Science and Technology (JUST)', major: 'Physics', role: 'student', subscription: { planId: 'single', endDate: '2024-07-15' } },
-    { id: 'stu_4', email: 'susan.lee@gradz.com', password: 'password123', name: 'Susan Lee', university: 'Yarmouk University', major: 'English Language and Literature', role: 'student' },
-];
+interface AuthContextType {
+    user: User | null;
+    users: User[]; // Expose all users for admin panel
+    loading: boolean;
+    login: (email: string, pass: string) => Promise<User | null>;
+    adminLogin: (email: string, pass: string) => Promise<User | null>;
+    logout: () => void;
+    signup: (name: string, email: string, university: string, major: string, pass: string) => Promise<User>;
+    redeemCode: (code: string) => Promise<{ success: boolean; message: string; value: number }>;
+    createTutorAccount: (application: TutorApplication, password: string) => Promise<User>;
+    updateUserProfile: (updatedProfile: Partial<User>) => Promise<void>;
+    subscribe: (planId: 'single' | 'semester') => Promise<void>;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const MOCK_ADMIN: User = { id: 'admin_1', email: 'admin@gradz.com', name: 'Admin User', university: 'Gradz', major: 'Administration', role: 'admin', wallet: { blue: 999, yellow: 999 } };
+const MOCK_TUTORS: User[] = [
+    { id: 'tutor_1', email: 'tutor@gradz.com', name: 'Dr. Expert', university: 'Gradz', major: 'Computer Science', role: 'tutor', wallet: { blue: 100, yellow: 100 }, bio: '10 years of experience in CS.', profileImageUrl: 'https://i.imgur.com/8b23vQW.png' },
+];
+
+// Combine all users into one list for easier management
+const ALL_USERS: User[] = [...MOCK_STUDENTS, ...MOCK_TUTORS, MOCK_ADMIN];
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [users, setUsers] = useState<User[]>(ALL_USERS);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         try {
             const storedUser = sessionStorage.getItem('gradzUser');
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
-            }
-        } catch (error) {
-            console.error("Failed to parse user from session storage", error);
-            sessionStorage.removeItem('gradzUser');
-        } finally {
-            setLoading(false);
-        }
+            if (storedUser) setUser(JSON.parse(storedUser));
+        } catch (error) { console.error("Failed to parse user from session storage", error); }
+        finally { setLoading(false); }
     }, []);
-
-    const login = async (email: string, password: string): Promise<User | null> => {
-        const foundUser = MOCK_STUDENT_DB.find(u => u.email === email && u.password === password);
-        if (foundUser) {
-            const { password: _, ...userToStore } = foundUser;
-            setUser(userToStore);
+    
+    const updateUserInStorage = (userToStore: User | null) => {
+        if (userToStore) {
             sessionStorage.setItem('gradzUser', JSON.stringify(userToStore));
-            return userToStore;
+            // Update the master list as well
+            setUsers(prevUsers => {
+                const index = prevUsers.findIndex(u => u.id === userToStore.id);
+                if (index > -1) {
+                    const newUsers = [...prevUsers];
+                    newUsers[index] = userToStore;
+                    return newUsers;
+                }
+                // If user is new (e.g. signup), add them to the list
+                return [...prevUsers, userToStore];
+            });
+        } else {
+            sessionStorage.removeItem('gradzUser');
+        }
+    };
+
+    const login = async (email: string, pass: string): Promise<User | null> => {
+        // Mock login: any known non-admin email with 'password' or 'tutorpass' works
+        const foundUser = users.find(u => u.email === email && u.role !== 'admin');
+        const validPasswords = ['password', 'tutorpass'];
+        if (foundUser && validPasswords.includes(pass)) {
+            setUser(foundUser);
+            updateUserInStorage(foundUser);
+            return foundUser;
         }
         return null;
     };
 
-    const adminLogin = async (email: string, password: string): Promise<User | null> => {
-        if (email === 'admin@gradz.com' && password === 'Gradz123') {
-            const adminUser: User = {
-                id: 'admin_1',
-                email: 'admin@gradz.com',
-                name: 'Admin',
-                university: 'N/A',
-                major: 'Administration',
-                role: 'admin'
-            };
-            setUser(adminUser);
-            sessionStorage.setItem('gradzUser', JSON.stringify(adminUser));
-            return adminUser;
+    const adminLogin = async (email: string, pass: string): Promise<User | null> => {
+        if (email === 'admin@gradz.com' && pass === 'Gradz123') {
+            setUser(MOCK_ADMIN);
+            updateUserInStorage(MOCK_ADMIN);
+            return MOCK_ADMIN;
         }
         return null;
     };
 
-    const signup = async (name: string, email: string, university: string, major: string, password: string): Promise<User | null> => {
-        if (MOCK_STUDENT_DB.some(u => u.email === email)) {
+    const logout = () => {
+        setUser(null);
+        sessionStorage.removeItem('gradzUser');
+        // Set the hash to the root route ('/') for the HashRouter.
+        // This correctly navigates to the homepage within the iframe environment
+        // of AI Studio, avoiding the "refused to connect" error that
+        // window.location.href = '/' would cause.
+        window.location.hash = '#/';
+    };
+
+    const signup = async (name: string, email: string, university: string, major: string, pass: string): Promise<User> => {
+        if (users.some(u => u.email === email)) {
             throw new Error("User already exists");
         }
-        const newUser: User & {password: string} = {
+        const newUser: User = {
             id: `stu_${Date.now()}`,
             name,
             email,
             university,
             major,
-            password,
-            role: 'student'
+            role: 'student',
+            wallet: { blue: 10, yellow: 0 }, // Welcome bonus
         };
-        MOCK_STUDENT_DB.push(newUser);
-        const { password: _, ...userToStore } = newUser;
-        setUser(userToStore);
-        sessionStorage.setItem('gradzUser', JSON.stringify(userToStore));
-        return userToStore;
+        setUsers(prev => [...prev, newUser]);
+        setUser(newUser);
+        updateUserInStorage(newUser);
+        return newUser;
     };
-    
-    const subscribe = async (planId: 'single' | 'semester'): Promise<void> => {
-        if (!user) throw new Error("No user logged in");
-        
-        const endDate = new Date();
-        endDate.setMonth(endDate.getMonth() + (planId === 'semester' ? 4 : 1));
 
-        const updatedUser: User = {
-            ...user,
-            subscription: {
-                planId,
-                endDate: endDate.toISOString().split('T')[0],
-            },
-        };
+    const redeemCode = async (code: string): Promise<{ success: boolean; message: string; value: number }> => {
+        if (!user) throw new Error("User not logged in");
         
-        setUser(updatedUser);
-        sessionStorage.setItem('gradzUser', JSON.stringify(updatedUser));
-
-        // Also update the mock DB
-        const userIndex = MOCK_STUDENT_DB.findIndex(u => u.id === user.id);
-        if(userIndex !== -1) {
-            const dbUser = MOCK_STUDENT_DB[userIndex];
-            MOCK_STUDENT_DB[userIndex] = { ...dbUser, ...updatedUser };
+        // This is a simple mock logic from the content context
+        if (code === 'YELLOW115') {
+            const updatedUser = { ...user, wallet: { ...user.wallet, yellow: user.wallet.yellow + 115 } };
+            setUser(updatedUser);
+            updateUserInStorage(updatedUser);
+            // In a real app, you would also mark the code as used in the backend/context
+            return { success: true, message: 'Success!', value: 115 };
         }
+        return { success: false, message: 'Code.invalid', value: 0 };
     };
 
-
-    const logout = () => {
-        setUser(null);
-        sessionStorage.removeItem('gradzUser');
+    const createTutorAccount = async (application: TutorApplication, password: string): Promise<User> => {
+        if (users.some(u => u.email === application.email)) {
+            throw new Error("A user with this email already exists.");
+        }
+        const newTutor: User = {
+            id: `tutor_${Date.now()}`,
+            email: application.email,
+            name: application.name,
+            university: application.university,
+            major: application.major,
+            role: 'tutor',
+            wallet: { blue: 0, yellow: 0 },
+            bio: '',
+            profileImageUrl: '',
+        };
+        setUsers(prev => [...prev, newTutor]);
+        setUser(newTutor);
+        updateUserInStorage(newTutor);
+        return newTutor;
     };
-    
+
+    const updateUserProfile = async (updatedProfile: Partial<User>): Promise<void> => {
+        if (!user) throw new Error("No user is logged in.");
+        
+        const updatedUser = { ...user, ...updatedProfile };
+        setUser(updatedUser);
+        updateUserInStorage(updatedUser);
+    };
+
+    const subscribe = async (planId: 'single' | 'semester'): Promise<void> => {
+        if (!user) throw new Error("No user is logged in.");
+
+        const newSubscription: Subscription = {
+            planId,
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 30 days (mock)
+        };
+
+        const updatedUser = { ...user, subscription: newSubscription };
+        setUser(updatedUser);
+        updateUserInStorage(updatedUser);
+    };
+
+    const authContextValue: AuthContextType = {
+        user,
+        users,
+        loading,
+        login,
+        adminLogin,
+        logout,
+        signup,
+        redeemCode,
+        createTutorAccount,
+        updateUserProfile,
+        subscribe,
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, login, adminLogin, logout, signup, subscribe }}>
+        <AuthContext.Provider value={authContextValue}>
             {children}
         </AuthContext.Provider>
     );

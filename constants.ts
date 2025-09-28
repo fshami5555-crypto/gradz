@@ -71,11 +71,12 @@ export const MAJORS = [
 ];
 
 
+// Fix: Added the required 'wallet' property to each mock student.
 export const MOCK_STUDENTS: User[] = [
-  { id: 'stu_1', email: 'student@gradz.com', name: 'Alex Johnson', university: 'Princess Sumaya University for Technology (PSUT)', major: 'Computer Science', role: 'student' },
-  { id: 'stu_2', email: 'jane.doe@gradz.com', name: 'Jane Doe', university: 'University of Jordan', major: 'Biology', role: 'student' },
-  { id: 'stu_3', email: 'peter.jones@gradz.com', name: 'Peter Jones', university: 'Jordan University of Science and Technology (JUST)', major: 'Physics', role: 'student' },
-  { id: 'stu_4', email: 'susan.lee@gradz.com', name: 'Susan Lee', university: 'Yarmouk University', major: 'English Language and Literature', role: 'student' },
+  { id: 'stu_1', email: 'student@gradz.com', name: 'Alex Johnson', university: 'Princess Sumaya University for Technology (PSUT)', major: 'Computer Science', role: 'student', wallet: { blue: 50, yellow: 10 } },
+  { id: 'stu_2', email: 'jane.doe@gradz.com', name: 'Jane Doe', university: 'University of Jordan', major: 'Biology', role: 'student', wallet: { blue: 120, yellow: 0 } },
+  { id: 'stu_3', email: 'peter.jones@gradz.com', name: 'Peter Jones', university: 'Jordan University of Science and Technology (JUST)', major: 'Physics', role: 'student', wallet: { blue: 75, yellow: 30 } },
+  { id: 'stu_4', email: 'susan.lee@gradz.com', name: 'Susan Lee', university: 'Yarmouk University', major: 'English Language and Literature', role: 'student', wallet: { blue: 200, yellow: 5 } },
 ];
 
 export const MOCK_COURSES: Course[] = [

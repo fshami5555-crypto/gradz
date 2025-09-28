@@ -17,7 +17,7 @@ const PublicHeader: React.FC = () => {
                 </Link>
                 <nav className="hidden md:flex items-center gap-8">
                     <Link to="/blog" className="text-base font-medium text-slate-700 hover:text-brand-orange transition-colors">{t('publicHeader.blog')}</Link>
-                    <Link to="/subscriptions" className="text-base font-medium text-slate-700 hover:text-brand-orange transition-colors">{t('publicHeader.pricing')}</Link>
+                    <Link to="/buy-coins" className="text-base font-medium text-slate-700 hover:text-brand-orange transition-colors">{t('publicHeader.pricing')}</Link>
                 </nav>
                 <div className="flex items-center gap-4">
                   <Link to="/become-tutor" className="px-5 py-2 text-base font-semibold text-white bg-brand-orange rounded-full shadow-lg hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 animate-pulse-slow">

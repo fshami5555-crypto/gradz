@@ -4,15 +4,15 @@ import Logo from '../ui/Logo';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const Sidebar: React.FC = () => {
+const TutorSidebar: React.FC = () => {
     const { logout } = useAuth();
     const { t, language } = useLanguage();
 
     const navItems = [
-        { path: '/dashboard', label: t('sidebar.dashboard'), icon: <HomeIcon /> },
-        { path: '/courses', label: t('sidebar.myCourses'), icon: <BookOpenIcon /> },
-        { path: '/chat', label: t('sidebar.chat'), icon: <ChatBubbleLeftRightIcon /> },
-        { path: '/community-chat', label: t('sidebar.communityChat'), icon: <UserGroupIcon /> },
+        { path: '/tutor/profile', label: t('tutor.sidebar.profile'), icon: <UserCircleIcon /> },
+        { path: '/tutor/courses', label: t('tutor.sidebar.courses'), icon: <BookOpenIcon /> },
+        { path: '/tutor/messages', label: t('tutor.sidebar.messages'), icon: <EnvelopeIcon /> },
+        { path: '/tutor/community-chat', label: t('sidebar.communityChat'), icon: <UserGroupIcon /> },
     ];
 
     const activeLinkClass = "bg-brand-turquoise/10 text-brand-turquoise border-brand-turquoise";
@@ -22,7 +22,7 @@ const Sidebar: React.FC = () => {
     return (
         <aside className="w-64 bg-white flex flex-col border-e border-slate-200">
             <div className="h-16 flex items-center px-6">
-                <Link to="/dashboard">
+                <Link to="/tutor/profile">
                     <Logo />
                 </Link>
             </div>
@@ -31,6 +31,7 @@ const Sidebar: React.FC = () => {
                     <NavLink
                         key={item.path}
                         to={item.path}
+                        end={item.path === '/tutor/profile'} // Use `end` for profile link to not match sub-routes
                         className={({ isActive }) => 
                             `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${linkBorderClass} ${isActive ? activeLinkClass : inactiveLinkClass}`
                         }
@@ -54,10 +55,10 @@ const Sidebar: React.FC = () => {
 };
 
 // SVG Icons
-const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>;
+const UserCircleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16.5c2.572 0 4.98.654 7.024 1.768l-1.42 1.42a11.91 11.91 0 00-11.209 0l-1.42-1.42z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 12a4.5 4.5 0 100-9 4.5 4.5 0 000 9z" /></svg>;
 const BookOpenIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>;
-const ChatBubbleLeftRightIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.76 9.76 0 01-2.53-.388m-5.12-3.07a.375.375 0 01-.375-.375V6.375c0-.207.168-.375.375-.375h12.5c.207 0 .375.168.375.375v3.375c0 .207-.168.375-.375.375h-7.5a.375.375 0 01-.375-.375V6.375m0 3.75l-3.75-3.75m0 0L3 6m0 0l3.75 3.75M3 6h12.5" /></svg>;
+const EnvelopeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>;
 const UserGroupIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-7.284-2.72a3 3 0 00-4.682-2.72m7.284 5.441v-4.642a3.375 3.375 0 013.375-3.375h1.5a1.125 1.125 0 011.125 1.125v1.513m-13.5 0V9.25c0-.621.504-1.125 1.125-1.125h1.5c1.866 0 3.375 1.509 3.375 3.375v4.642m-1.125.479v-.513m0 .513a9.094 9.094 0 01-3.741-.479m0 0a3 3 0 01-4.682-2.72M12 18.72v-4.642a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 00-1.125 1.125v1.513M12 18.72a9.094 9.094 0 003.741-.479m-3.741 0a9.094 9.094 0 01-3.741-.479" /></svg>;
 const ArrowLeftOnRectangleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>;
 
-export default Sidebar;
+export default TutorSidebar;

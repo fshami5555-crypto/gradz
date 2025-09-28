@@ -1,82 +1,148 @@
-// Fix: Define LabeledContent here as it was not exported from LanguageContext.
-export interface LabeledContent {
-  en: string;
-  ar: string;
+export type UserRole = 'student' | 'tutor' | 'admin';
+
+export interface Wallet {
+    blue: number;
+    yellow: number;
 }
 
 export interface Subscription {
-  planId: 'single' | 'semester';
-  endDate: string;
+    planId: 'single' | 'semester';
+    expires: string; // ISO date string
 }
 
 export interface User {
-  id: string;
-  email: string;
-  name: string;
-  university: string;
-  major: string;
-  role: 'student' | 'admin';
-  subscription?: Subscription;
+    id: string;
+    email: string;
+    name: string;
+    university: string;
+    major: string;
+    role: UserRole;
+    wallet: Wallet;
+    subscription?: Subscription;
+    // Tutor-specific fields
+    bio?: string;
+    profileImageUrl?: string;
 }
 
 export interface Course {
-  id: string;
-  title: string;
-  department: string;
-  instructor: string;
-  credits: number;
-  description: string;
+    id: string;
+    title: string;
+    department: string;
+    instructor: string;
+    credits: number;
+    description: string;
 }
 
-export interface AuthContextType {
-    user: User | null;
-    loading: boolean;
-    login: (email: string, password: string) => Promise<User | null>;
-    adminLogin: (email: string, password: string) => Promise<User | null>;
-    logout: () => void;
-    signup: (name: string, email: string, university: string, major: string, password: string) => Promise<User | null>;
-    subscribe: (planId: 'single' | 'semester') => Promise<void>;
+export interface TutorApplication {
+    name: string;
+    email: string;
+    university: string;
+    major: string;
+    subjects: string;
+}
+
+export interface BlogPost {
+    id: string;
+    title: string;
+    content: string;
+    author: string;
+    createdAt: string; // e.g., "July 15, 2024"
+    imageUrl: string;
+}
+
+export interface TranslatedString {
+    en: string;
+    ar: string;
+}
+
+export interface CoinPackage {
+    id: string;
+    name: TranslatedString;
+    amount: number;
+    bonus: number;
+    price: number; // in JOD
+}
+
+export interface RedeemCode {
+    code: string;
+    packageId: string;
+    used: boolean;
 }
 
 export interface SubscriptionPlan {
     id: 'single' | 'semester';
-    name: LabeledContent;
-    price: string;
+    name: TranslatedString;
+    price: number; // in JOD
     features: {
         en: string[];
         ar: string[];
     };
 }
 
-export interface BlogPost {
+export interface FAQItem {
+    id: string;
+    question: TranslatedString;
+    answer: TranslatedString;
+}
+
+export interface CommunityChatMessage {
+    id: string;
+    university: string; // University's English name
+    userId: string;
+    userName: string;
+    userRole: UserRole;
+    timestamp: number;
+    content: {
+        text?: string;
+        imageUrl?: string;
+        fileUrl?: string; // data URL for mock
+        fileName?: string;
+    };
+}
+
+export interface CommunityBanner {
+    university: string; // University's English name
+    bannerUrl: string;
+}
+
+export interface SiteConfig {
+    logoUrl: string;
+    homepageHeroUrls: [string, string, string];
+    universityLogos: { name: string; logo: string }[];
+    blueZCoinUrl: string;
+    yellowZCoinUrl: string;
+    siteStats: {
+        students: number;
+        tutors: number;
+        courses: number;
+        visitors: number;
+    };
+    faq: FAQItem[];
+    communityBanners: CommunityBanner[];
+}
+
+export interface VideoLesson {
     id: string;
     title: string;
-    author: string;
-    createdAt: string;
-    content: string;
-    imageUrl: string;
+    description: string;
+    videoUrl: string;
 }
 
-export interface TutorApplication {
+export interface TutorCourse {
     id: string;
-    name: string;
-    email: string;
+    tutorId: string;
+    title: string;
     university: string;
     major: string;
-    year: string;
-    subjects: string;
-    motivation: string;
-    submittedAt: string;
+    lessons: VideoLesson[];
 }
 
-
-export interface ContentContextType {
-  subscriptionPlans: SubscriptionPlan[];
-  updateSubscriptionPlans: (plans: SubscriptionPlan[]) => void;
-  blogPosts: BlogPost[];
-  addBlogPost: (post: Omit<BlogPost, 'id' | 'createdAt'>) => void;
-  updateBlogPost: (post: BlogPost) => void;
-  deleteBlogPost: (postId: string) => void;
-  tutorApplications: TutorApplication[];
-  addTutorApplication: (application: Omit<TutorApplication, 'id' | 'submittedAt'>) => Promise<void>;
+export interface Message {
+    id: string;
+    fromStudentId: string;
+    fromStudentName: string;
+    toTutorId: string;
+    subject: string;
+    body: string;
+    timestamp: number;
 }

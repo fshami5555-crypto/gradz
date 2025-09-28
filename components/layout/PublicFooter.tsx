@@ -41,7 +41,7 @@ const PublicFooter: React.FC = () => {
                     <div>
                         <h4 className="font-semibold text-white mb-4">{t('footer.links.title')}</h4>
                         <ul className="space-y-2">
-                             <li><Link to="/subscriptions" className="hover:text-white transition-colors">{t('publicHeader.pricing')}</Link></li>
+                             <li><Link to="/buy-coins" className="hover:text-white transition-colors">{t('publicHeader.pricing')}</Link></li>
                             <li><Link to="/blog" className="hover:text-white transition-colors">{t('footer.links.blog')}</Link></li>
                             <li><Link to="/become-tutor" className="font-semibold text-brand-turquoise hover:text-white transition-colors">{t('footer.links.careers')}</Link></li>
                         </ul>

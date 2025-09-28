@@ -1,45 +1,42 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useSiteConfig } from '../../contexts/SiteConfigContext';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 
-const SubscriptionBadge: React.FC<{ planId: 'single' | 'semester' }> = ({ planId }) => {
-    const { t } = useLanguage();
-    const isSemester = planId === 'semester';
-    const bgColor = isSemester ? 'bg-brand-orange' : 'bg-brand-turquoise';
-    const text = isSemester ? t('header.semesterPlan') : t('header.singleCoursePlan');
-    
-    return (
-        <span className={`px-2 py-1 text-xs font-semibold text-white ${bgColor} rounded-full`}>
-            {text}
-        </span>
-    );
-};
-
-
 const Header: React.FC = () => {
-  const { user } = useAuth();
-  const { t, language } = useLanguage();
+    const { user } = useAuth();
+    const { config } = useSiteConfig();
 
-  return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white border-b-2 border-slate-200">
-      <div className="flex items-center">
-        <h1 className="text-xl font-semibold text-gray-700">{t('header.welcome')}, {user?.name}!</h1>
-      </div>
-      <div className="flex items-center gap-4">
-         {user?.subscription && <SubscriptionBadge planId={user.subscription.planId} />}
-         <LanguageSwitcher />
-        <div className="relative">
-          <button className="flex items-center text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-brand-turquoise transition">
-             <div className="h-10 w-10 rounded-full bg-brand-turquoise flex items-center justify-center text-white font-bold text-lg">
-              {user?.name.charAt(0)}
+    return (
+        <header className="flex items-center justify-end h-16 bg-white shadow-sm px-6 gap-4">
+            <div className="flex items-center gap-4">
+                 {/* Blue Coins */}
+                <div className="flex items-center gap-2 bg-blue-100/50 border border-blue-200 px-3 py-1 rounded-full">
+                    <img src={config.blueZCoinUrl} alt="Blue Z-Coin" className="h-6 w-6" />
+                    <span className="font-bold text-blue-600">{user?.wallet.blue || 0}</span>
+                </div>
+                 {/* Yellow Coins */}
+                 <div className="flex items-center gap-2 bg-yellow-100/50 border border-yellow-200 px-3 py-1 rounded-full">
+                    <img src={config.yellowZCoinUrl} alt="Yellow Z-Coin" className="h-6 w-6" />
+                    <span className="font-bold text-yellow-600">{user?.wallet.yellow || 0}</span>
+                     <Link to="/buy-coins" className="ms-1 h-5 w-5 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors" title="Buy More Coins">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    </Link>
+                </div>
             </div>
-            <span className={`hidden md:inline font-medium text-slate-700 ${language === 'ar' ? 'me-2' : 'ms-2'}`}>{user?.name}</span>
-          </button>
-        </div>
-      </div>
-    </header>
-  );
+             <LanguageSwitcher />
+            <div className="flex items-center gap-2">
+                 <div className="text-right">
+                    <p className="font-semibold text-slate-800">{user?.name}</p>
+                    <p className="text-xs text-slate-500">{user?.major}</p>
+                </div>
+               <div className="h-10 w-10 rounded-full bg-brand-turquoise flex items-center justify-center text-white font-bold">
+                    {user?.name?.charAt(0)}
+                </div>
+            </div>
+        </header>
+    );
 };
 
 export default Header;

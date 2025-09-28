@@ -2,11 +2,78 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteConfig } from '../contexts/SiteConfigContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { FAQItem } from '../types';
+
+const AnimatedCounter: React.FC<{ value: number }> = ({ value }) => {
+    const [count, setCount] = useState(0);
+    const ref = useRef<HTMLSpanElement>(null);
+    const duration = 2000; // 2 seconds
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    let start = 0;
+                    const end = value;
+                    if (start === end) return;
+
+                    let startTime: number | null = null;
+                    const step = (timestamp: number) => {
+                        if (!startTime) startTime = timestamp;
+                        const progress = Math.min((timestamp - startTime) / duration, 1);
+                        setCount(Math.floor(progress * end));
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.5 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => observer.disconnect();
+    }, [value]);
+
+    return <span ref={ref}>{count.toLocaleString()}</span>;
+};
+
+const FaqItemComponent: React.FC<{ faq: FAQItem, isOpen: boolean, onClick: () => void }> = ({ faq, isOpen, onClick }) => {
+    const { language } = useLanguage();
+    const question = faq.question[language];
+    const answer = faq.answer[language];
+
+    return (
+        <div className="border-b border-slate-200 py-4">
+            <button
+                onClick={onClick}
+                className="w-full flex justify-between items-center text-lg font-semibold text-slate-800 text-start"
+                aria-expanded={isOpen}
+            >
+                <span>{question}</span>
+                <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+                    <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </span>
+            </button>
+            <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 mt-4' : 'max-h-0'}`}
+            >
+                <p className="text-slate-600 leading-relaxed">{answer}</p>
+            </div>
+        </div>
+    );
+};
 
 const HomePage: React.FC = () => {
     const { config } = useSiteConfig();
     const { t } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
     const timeoutRef = useRef<number | null>(null);
 
     const resetTimeout = () => {
@@ -30,10 +97,21 @@ const HomePage: React.FC = () => {
         setCurrentIndex(slideIndex);
     };
 
+    const handleFaqClick = (index: number) => {
+        setOpenFaqIndex(openFaqIndex === index ? null : index);
+    };
+
     const features = [
         { title: t('home.features.card1.title'), description: t('home.features.card1.description'), icon: '🤖' },
         { title: t('home.features.card2.title'), description: t('home.features.card2.description'), icon: '📚' },
         { title: t('home.features.card3.title'), description: t('home.features.card3.description'), icon: '💬' },
+    ];
+
+    const stats = [
+        { value: config.siteStats.students, label: t('home.stats.students'), icon: '🎓' },
+        { value: config.siteStats.tutors, label: t('home.stats.tutors'), icon: '🧑‍🏫' },
+        { value: config.siteStats.courses, label: t('home.stats.courses'), icon: '📖' },
+        { value: config.siteStats.visitors, label: t('home.stats.visitors'), icon: '🌐' },
     ];
 
     return (
@@ -105,8 +183,45 @@ const HomePage: React.FC = () => {
                 </div>
             </section>
 
+             {/* Stats Section */}
+            <section id="stats" className="py-20 px-4 bg-brand-blue-light">
+                <div className="container mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+                        {stats.map((stat, index) => (
+                            <div key={index}>
+                                <div className="text-5xl mb-2">{stat.icon}</div>
+                                <h3 className="text-5xl font-extrabold">
+                                    <AnimatedCounter value={stat.value} />
+                                </h3>
+                                <p className="text-slate-300 mt-1">{stat.label}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* FAQ Section */}
+            <section id="faq" className="py-24 px-4 bg-slate-50">
+                <div className="container mx-auto">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-4xl font-bold text-brand-blue">{t('home.faq.title')}</h2>
+                        <p className="mt-4 text-lg text-slate-600">{t('home.faq.subtitle')}</p>
+                    </div>
+                    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+                        {config.faq.map((item, index) => (
+                            <FaqItemComponent
+                                key={item.id}
+                                faq={item}
+                                isOpen={openFaqIndex === index}
+                                onClick={() => handleFaqClick(index)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* University Logos Section */}
-            <section className="py-20 px-4 bg-slate-100/70">
+            <section className="py-20 px-4 bg-white">
                 <div className="container mx-auto text-center">
                     <h3 className="text-2xl font-semibold text-slate-700 mb-10">{t('home.universities.title')}</h3>
                     <div className="flex flex-wrap justify-center items-center gap-x-14 gap-y-10">
