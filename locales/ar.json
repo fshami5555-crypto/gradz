@@ -1,0 +1,213 @@
+{
+  "publicHeader": {
+    "blog": "المدونة",
+    "pricing": "الأسعار",
+    "goToDashboard": "الذهاب إلى لوحة التحكم",
+    "loginSignup": "تسجيل الدخول / إنشاء حساب"
+  },
+  "publicFooter": {
+    "rightsReserved": "جميع الحقوق محفوظة.",
+    "adminAccess": "دخول المسؤولين"
+  },
+  "home": {
+    "hero": {
+      "title": "مركزك الجامعي الشخصي",
+      "subtitle": "المنصة الأولى للتدريس، وأدوات الدراسة المدعومة بالذكاء الاصطناعي، والنجاح الأكاديمي لطلاب الجامعات في الأردن.",
+      "cta": "ابدأ الآن مجاناً"
+    },
+    "universities": {
+      "title": "يثق بنا طلاب من أفضل الجامعات الأردنية"
+    },
+    "features": {
+      "title": "كل ما تحتاجه للنجاح",
+      "subtitle": "توفر Gradz أدوات قوية ومتكاملة لتسهيل دراستك وتعزيز أدائك.",
+      "card1": {
+        "title": "مساعد دراسي ذكي",
+        "description": "احصل على إجابات وشروحات فورية للمواضيع المعقدة مع مساعدك الشخصي الذكي، المتاح على مدار الساعة."
+      },
+      "card2": {
+        "title": "مساقات شاملة",
+        "description": "ادخل إلى فهرس واسع من المساقات لتخصصك، مصممة من قبل أفضل المحاضرين لتتوافق مع خطتك الدراسية."
+      },
+      "card3": {
+        "title": "مساحة عمل شخصية",
+        "description": "نظم مساقاتك، تتبع تقدمك، وأدر حياتك الأكاديمية من لوحة تحكم مركزية واحدة."
+      }
+    }
+  },
+  "login": {
+    "welcomeBack": "أهلاً بعودتك!",
+    "emailPlaceholder": "البريد الإلكتروني",
+    "passwordPlaceholder": "كلمة المرور",
+    "loginButton": "تسجيل الدخول",
+    "newUserPrompt": "جديد في Gradz؟",
+    "createAccountLink": "أنشئ حساباً",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    "loginFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+    "loginLink": "تسجيل الدخول"
+  },
+  "signup": {
+    "title": "انضم إلى Gradz اليوم",
+    "fullNamePlaceholder": "الاسم الكامل",
+    "selectUniversityPlaceholder": "اختر جامعتك",
+    "selectMajorPlaceholder": "اختر تخصصك",
+    "signupButton": "إنشاء حساب",
+    "alreadyHaveAccountPrompt": "لديك حساب بالفعل؟",
+    "userExistsError": "يوجد مستخدم بهذا البريد الإلكتروني بالفعل.",
+    "signupFailed": "فشل إنشاء الحساب."
+  },
+  "subscriptions": {
+    "title": "خطط الاشتراك لدينا",
+    "subtitle": "اختر الخطة التي تناسب احتياجاتك الأكاديمية واستفد من كامل إمكانيات Gradz.",
+    "currency": "دينار",
+    "perSemester": "لكل فصل",
+    "perCourse": "لكل مادة",
+    "currentPlan": "الخطة الحالية",
+    "subscribeNow": "اشترك الآن",
+    "successMessage": "تم الاشتراك بنجاح في خطة {{planName}}!",
+    "errorMessage": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "processing": "جاري المعالجة...",
+    "plan": {
+      "single": "مادة واحدة",
+      "semester": "فصل كامل"
+    }
+  },
+  "blog": {
+    "title": "مدونة Gradz",
+    "subtitle": "رؤى ونصائح وتحديثات لمساعدتك في رحلتك الأكاديمية.",
+    "readMore": "اقرأ المزيد",
+    "by": "بواسطة",
+    "on": "في",
+    "postNotFound": "المقال غير موجود",
+    "backToBlog": "العودة إلى المدونة",
+    "backToAllPosts": "العودة إلى كل المقالات"
+  },
+  "share": {
+    "share": "مشاركة"
+  },
+  "header": {
+    "welcome": "أهلاً",
+    "semesterPlan": "خطة فصلية",
+    "singleCoursePlan": "خطة مادة واحدة"
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "courses": "المساقات",
+    "subscriptions": "الاشتراكات",
+    "blog": "المدونة",
+    "aiStudyBuddy": "المساعد الدراسي",
+    "logout": "تسجيل الخروج"
+  },
+  "dashboard": {
+    "title": "مساحة عملك",
+    "welcome": "أهلاً بعودتك",
+    "subtitle": "إليك آخر المستجدات في دراستك اليوم.",
+    "myCourses": "مساقاتي",
+    "aiTool": {
+      "title": "المساعد الدراسي الذكي",
+      "subtitle": "اسألني أي شيء عن مساقاتك!",
+      "noMessages": "لا توجد رسائل بعد. ابدأ بطرح سؤال أدناه.",
+      "thinking": "أفكر...",
+      "placeholder": "مثال: اشرح الميكانيكا الكلاسيكية بعبارات بسيطة...",
+      "send": "إرسال",
+      "sending": "جار الإرسال..."
+    }
+  },
+  "courses": {
+    "title": "فهرس المساقات",
+    "subtitle": "استكشف وسجل في المساقات لبناء جدولك الأكاديمي.",
+    "filterByMajor": "تصفية حسب التخصص:",
+    "allMajors": "كل التخصصات",
+    "noCoursesFound": "لم يتم العثور على مساقات للتخصص المختار.",
+    "instructor": "المدرس",
+    "credits": "ساعات معتمدة",
+    "enroll": "تسجيل"
+  },
+  "adminLogin": {
+    "title": "دخول المسؤولين",
+    "signIn": "تسجيل دخول المسؤول",
+    "emailPlaceholder": "بريد المسؤول الإلكتروني",
+    "accessDashboardButton": "الدخول إلى لوحة التحكم",
+    "notAdminPrompt": "لست مسؤولاً؟",
+    "returnHomeLink": "العودة إلى الصفحة الرئيسية",
+    "invalidCredentials": "بيانات اعتماد المسؤول غير صالحة.",
+    "loginFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى."
+  },
+  "admin": {
+    "title": "لوحة تحكم المسؤول",
+    "tabs": {
+      "dashboard": "لوحة التحكم",
+      "students": "الطلاب",
+      "courses": "المساقات",
+      "content": "المحتوى",
+      "siteImages": "صور الموقع"
+    },
+    "dashboard": {
+      "totalStudents": "إجمالي الطلاب",
+      "totalCourses": "إجمالي المساقات",
+      "activeSubscriptions": "الاشتراكات النشطة",
+      "blogPosts": "مقالات المدونة"
+    },
+    "students": {
+      "title": "إدارة الطلاب",
+      "table": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "university": "الجامعة",
+        "major": "التخصص",
+        "subscription": "الاشتراك",
+        "none": "لا يوجد"
+      }
+    },
+    "courses": {
+      "title": "إدارة المساقات",
+      "addNew": "إضافة مساق جديد",
+      "placeholder": "واجهة إدارة المساقات تظهر هنا...",
+      "addModal": {
+        "title": "إضافة مساق جديد",
+        "courseTitle": "عنوان المساق",
+        "selectDepartment": "اختر القسم",
+        "instructorName": "اسم المدرس",
+        "credits": "الساعات المعتمدة",
+        "description": "وصف المساق"
+      }
+    },
+    "content": {
+      "blog": {
+        "title": "إدارة المدونة",
+        "addNew": "إضافة مقال جديد",
+        "addPost": "إضافة مقال",
+        "editPost": "تعديل المقال",
+        "imageUrl": "رابط الصورة",
+        "content": "محتوى المقال",
+        "table": {
+          "title": "العنوان",
+          "author": "المؤلف",
+          "actions": "الإجراءات"
+        }
+      },
+      "plans": {
+        "title": "إدارة خطط الاشتراك",
+        "plan": "خطة",
+        "price": "السعر",
+        "updatedAlert": "تم تحديث خطط الاشتراك!"
+      }
+    },
+    "images": {
+      "title": "إدارة صور الموقع",
+      "mainLogoUrl": "رابط الشعار الرئيسي",
+      "heroUrl": "رابط صورة الخلفية للصفحة الرئيسية",
+      "universityLogos": "شعارات الجامعات"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "addCourse": "إضافة مساق",
+      "saveChanges": "حفظ التغييرات",
+      "saved": "تم الحفظ!",
+      "savePlanChanges": "حفظ تغييرات الخطط",
+      "savePost": "حفظ المقال"
+    }
+  }
+}

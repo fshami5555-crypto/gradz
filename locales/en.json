@@ -1,0 +1,213 @@
+{
+  "publicHeader": {
+    "blog": "Blog",
+    "pricing": "Pricing",
+    "goToDashboard": "Go to Dashboard",
+    "loginSignup": "Login / Sign Up"
+  },
+  "publicFooter": {
+    "rightsReserved": "All rights reserved.",
+    "adminAccess": "Administrator Access"
+  },
+  "home": {
+    "hero": {
+      "title": "Your Personal University Hub",
+      "subtitle": "The premier platform for teaching, AI-powered study tools, and academic success for university students in Jordan.",
+      "cta": "Get Started for Free"
+    },
+    "universities": {
+      "title": "Trusted by Students from Jordan's Leading Universities"
+    },
+    "features": {
+      "title": "Everything You Need to Succeed",
+      "subtitle": "Gradz provides powerful, integrated tools to streamline your studies and boost your performance.",
+      "card1": {
+        "title": "AI Study Buddy",
+        "description": "Get instant answers and explanations for complex topics with your personal AI assistant, available 24/7."
+      },
+      "card2": {
+        "title": "Comprehensive Courses",
+        "description": "Access a wide catalog of courses for your major, designed by top instructors to align with your curriculum."
+      },
+      "card3": {
+        "title": "Personal Workspace",
+        "description": "Organize your courses, track your progress, and manage your academic life from one central dashboard."
+      }
+    }
+  },
+  "login": {
+    "welcomeBack": "Welcome Back!",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "loginButton": "Log In",
+    "newUserPrompt": "New to Gradz?",
+    "createAccountLink": "Create an account",
+    "invalidCredentials": "Invalid email or password.",
+    "loginFailed": "Failed to log in. Please try again.",
+    "loginLink": "Log In"
+  },
+  "signup": {
+    "title": "Join Gradz Today",
+    "fullNamePlaceholder": "Full Name",
+    "selectUniversityPlaceholder": "Select your university",
+    "selectMajorPlaceholder": "Select your major",
+    "signupButton": "Sign Up",
+    "alreadyHaveAccountPrompt": "Already have an account?",
+    "userExistsError": "A user with this email already exists.",
+    "signupFailed": "Failed to create account."
+  },
+  "subscriptions": {
+    "title": "Our Subscription Plans",
+    "subtitle": "Choose the plan that best fits your academic needs and unlock the full power of Gradz.",
+    "currency": "JD",
+    "perSemester": "Per Semester",
+    "perCourse": "Per Course",
+    "currentPlan": "Current Plan",
+    "subscribeNow": "Subscribe Now",
+    "successMessage": "Successfully subscribed to the {{planName}} plan!",
+    "errorMessage": "An error occurred. Please try again.",
+    "processing": "Processing...",
+    "plan": {
+      "single": "Single Course",
+      "semester": "Full Semester"
+    }
+  },
+  "blog": {
+    "title": "The Gradz Blog",
+    "subtitle": "Insights, tips, and updates to help you on your academic journey.",
+    "readMore": "Read More",
+    "by": "By",
+    "on": "on",
+    "postNotFound": "Post not found",
+    "backToBlog": "Back to Blog",
+    "backToAllPosts": "Back to All Posts"
+  },
+  "share": {
+    "share": "Share"
+  },
+  "header": {
+    "welcome": "Welcome",
+    "semesterPlan": "Semester Plan",
+    "singleCoursePlan": "Single Course Plan"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "courses": "Courses",
+    "subscriptions": "Subscriptions",
+    "blog": "Blog",
+    "aiStudyBuddy": "AI Study Buddy",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Your Workspace",
+    "welcome": "Welcome back",
+    "subtitle": "Here's what's happening with your studies today.",
+    "myCourses": "My Courses",
+    "aiTool": {
+      "title": "AI Study Buddy",
+      "subtitle": "Ask me anything about your courses!",
+      "noMessages": "No messages yet. Start by asking a question below.",
+      "thinking": "Thinking...",
+      "placeholder": "e.g., Explain Classical Mechanics in simple terms...",
+      "send": "Send",
+      "sending": "Sending..."
+    }
+  },
+  "courses": {
+    "title": "Course Catalog",
+    "subtitle": "Explore and enroll in courses to build your academic schedule.",
+    "filterByMajor": "Filter by Major",
+    "allMajors": "All Majors",
+    "noCoursesFound": "No courses found for the selected major.",
+    "instructor": "Instructor",
+    "credits": "Credits",
+    "enroll": "Enroll"
+  },
+  "adminLogin": {
+    "title": "Administrator Access",
+    "signIn": "Admin Sign In",
+    "emailPlaceholder": "Admin Email",
+    "accessDashboardButton": "Access Dashboard",
+    "notAdminPrompt": "Not an admin?",
+    "returnHomeLink": "Return to Home Page",
+    "invalidCredentials": "Invalid administrator credentials.",
+    "loginFailed": "Failed to log in. Please try again."
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "tabs": {
+      "dashboard": "Dashboard",
+      "students": "Students",
+      "courses": "Courses",
+      "content": "Content",
+      "siteImages": "Site Images"
+    },
+    "dashboard": {
+      "totalStudents": "Total Students",
+      "totalCourses": "Total Courses",
+      "activeSubscriptions": "Active Subscriptions",
+      "blogPosts": "Blog Posts"
+    },
+    "students": {
+      "title": "Student Management",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "university": "University",
+        "major": "Major",
+        "subscription": "Subscription",
+        "none": "None"
+      }
+    },
+    "courses": {
+      "title": "Course Management",
+      "addNew": "Add New Course",
+      "placeholder": "Course management UI goes here...",
+      "addModal": {
+        "title": "Add New Course",
+        "courseTitle": "Course Title",
+        "selectDepartment": "Select Department",
+        "instructorName": "Instructor Name",
+        "credits": "Credits",
+        "description": "Course Description"
+      }
+    },
+    "content": {
+      "blog": {
+        "title": "Blog Management",
+        "addNew": "Add New Post",
+        "addPost": "Add Blog Post",
+        "editPost": "Edit Blog Post",
+        "imageUrl": "Image URL",
+        "content": "Post Content",
+        "table": {
+          "title": "Title",
+          "author": "Author",
+          "actions": "Actions"
+        }
+      },
+      "plans": {
+        "title": "Subscription Plan Management",
+        "plan": "Plan",
+        "price": "Price",
+        "updatedAlert": "Subscription plans updated!"
+      }
+    },
+    "images": {
+      "title": "Site Image Management",
+      "mainLogoUrl": "Main Logo URL",
+      "heroUrl": "Homepage Hero Background URL",
+      "universityLogos": "University Logos"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "addCourse": "Add Course",
+      "saveChanges": "Save Changes",
+      "saved": "Changes saved!",
+      "savePlanChanges": "Save Plan Changes",
+      "savePost": "Save Post"
+    }
+  }
+}
